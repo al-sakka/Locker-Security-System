@@ -1,0 +1,8 @@
+# Ignore all hidden files and directories
+.*
+
+# Do not ignore the .gitignore file itself
+!.gitignore
+
+# Ignore the Debug directory
+Debug/
