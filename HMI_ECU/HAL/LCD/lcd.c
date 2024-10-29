@@ -288,7 +288,7 @@ void LCD_startScreen(void)
 void LCD_waitPeople(void)
 {
 	LCD_clearScreen();
-	LCD_displayString("Waiting For People");
+	LCD_displayString("Wait For People");
 	LCD_moveCursor(1, 0);
 	LCD_displayString("To Enter");
 }
