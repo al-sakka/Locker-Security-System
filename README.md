@@ -2,6 +2,8 @@
 
 This project implements a smart, secure door control system that uses password authentication and dual microcontroller (MCU) communication for efficient functionality. Designed with advanced embedded systems techniques, this project leverages UART, EEPROM, motor control, a PIR sensor, and a keypad to enhance the security and usability of door access control.
 
+![Project Demo](docs/Screenshots/Screenshot2.png)
+
 ---
 
 ## Table of Contents
