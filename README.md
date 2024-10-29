@@ -24,6 +24,8 @@ This door control system uses two ATmega32 MCUs:
 
 The system enables secure password management, password-protected door unlocking, and includes advanced security mechanisms like timed locks and alarm activation after multiple failed attempts.
 
+![Project Demo](docs/Screenshots/Screenshot1.png)
+
 ---
 
 ## Features
@@ -89,6 +91,8 @@ The system enables secure password management, password-protected door unlocking
 5. **Security Lock Mechanism**
    - After three incorrect password attempts, buzzer activates for 1 minute and the system locks temporarily.
 
+![Project Demo](docs/Screenshots/Screenshot3.png)
+
 ---
 
 ## System Requirements
@@ -114,6 +118,8 @@ The system enables secure password management, password-protected door unlocking
 ### Configuration Structures
 - **UART_ConfigType** and **TWI_ConfigType**: Allows flexible configuration of UART and I2C protocols.
 - **Timer_ConfigType**: Manages timer operations across both ECUs.
+
+![Project Demo](docs/Screenshots/layers_screenshot.png)
 
 ---
 
