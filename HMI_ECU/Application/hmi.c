@@ -60,7 +60,7 @@ void HMI_init(void)
  */
 static uint8 HMI_config(uint8 a_pressedKey, uint8 a_mode)
 {
-	Timer_ConfigType Timer_conf = {TIMER1, INITIAL_VALUE_ZERO, F_CPU_CLK_1024, COMPARE_MODE, 58594};
+	Timer_ConfigType Timer_conf = {TIMER1, INITIAL_VALUE_ZERO, F_CPU_CLK_1024, COMPARE_MODE, COMPARE_VALUE};
 
 	static uint8 password_str[PASSWORD_SIZE + ONE] = "";		/* 0 : 6 */
 	static uint8 pass_chars = INITIAL_VALUE_ZERO;

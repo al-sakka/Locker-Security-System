@@ -19,7 +19,8 @@
 *                                Definitions                                  *
 *******************************************************************************/
 
-#define ONE_MINUTE_TICKS	(1)
+#define COMPARE_VALUE		(58594UL)
+#define ONE_MINUTE_TICKS	(8u)
 
 /*******************************************************************************
 *                      Functions Prototypes                                   *
