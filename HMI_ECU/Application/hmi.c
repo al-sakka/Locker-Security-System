@@ -133,8 +133,6 @@ static uint8 HMI_config(uint8 a_pressedKey, uint8 a_mode)
 
 					return (0xAA);
 				}
-
-
 			}
 			else if(receivedByte == PASSWORD_WRONG)
 			{
@@ -156,9 +154,7 @@ static uint8 HMI_config(uint8 a_pressedKey, uint8 a_mode)
 					Timer_setCallBack(	Timer1_CompareMatch_Callback, Timer_conf.timer_ID	);
 
 					while(systemLocked == TRUE);
-
 					UART_sendByte(ALARM_SIGNAL_OFF);
-
 					LCD_menuDisplay();
 					return (0xAA);
 
@@ -211,7 +207,7 @@ static uint8 HMI_config(uint8 a_pressedKey, uint8 a_mode)
 				LCD_enterPass();
 
 				passAttempts = 0;
-
+				enterPressed = FALSE;
 				return 2;
 			}
 			else if(receivedByte == PASSWORD_WRONG)
@@ -226,7 +222,7 @@ static uint8 HMI_config(uint8 a_pressedKey, uint8 a_mode)
 				{
 					UART_sendByte(ALARM_SIGNAL);
 					LCD_alarm();
-					passAttempts = 0;
+					passAttempts = ZERO;
 					systemLocked = TRUE;
 
 					Timer_init(&Timer_conf);
@@ -243,8 +239,6 @@ static uint8 HMI_config(uint8 a_pressedKey, uint8 a_mode)
 				{
 					LCD_enterOldPass();
 				}
-
-				return 3;
 			}
 
 			pass_chars = INITIAL_VALUE_ZERO;
@@ -317,7 +311,7 @@ uint8 HMI_main(void)
 
     for(;;)
     {
-        if	(mode == 1)
+        if	(mode == 1 || mode == 0xAA)
         {
         	/* Main Menu */
             if(!menuDisplayed)
@@ -331,6 +325,8 @@ uint8 HMI_main(void)
         	if(pressedKey == '+')
         	{
 				LCD_enterOldPass();
+
+				mode = 1;
 
         		for(;;)
         		{
@@ -347,7 +343,9 @@ uint8 HMI_main(void)
         	else if(pressedKey == '-')
         	{
 				LCD_enterOldPass();
+
         		mode = 3;
+
         		while(mode == 3)
         		{
         			pressedKey = KEYPAD_getPressedKey();
