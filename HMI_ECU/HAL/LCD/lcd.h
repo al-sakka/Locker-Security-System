@@ -104,24 +104,56 @@ void LCD_clearScreen(void);
 
 /*
  * Description :
- * Show first password attempt
+ * Display first password attempt
  */
 void LCD_enterPass(void);
 
 /*
  * Description :
- * Show second password attempt
+ * Display Alarm Alert
+ */
+void LCD_alarm(void);
+
+/*
+ * Description :
+ * Display old password attempt
+ */
+void LCD_enterOldPass(void);
+
+/*
+ * Description :
+ * Display second password attempt
  */
 void LCD_confirmPass(void);
 
 /*
  * Description :
- * Set-up LCD configrations
+ * Display string for main menu
  */
-uint8 LCD_config(uint8 a_pressedKey, uint8 mode);
+void LCD_menuDisplay(void);
 
-void LCD_menuDisplay();
+/*
+ * Description :
+ * Display string for unlocking door state
+ */
+void LCD_doorUnlock(void);
 
-uint8 LCD_menu(uint8 a_pressedKey);
+/*
+ * Description :
+ * Display string for start screen
+ */
+void LCD_startScreen(void);
+
+/*
+ * Description :
+ * Display string for waiting people
+ */
+void LCD_waitPeople(void);
+
+/*
+ * Description :
+ * Display string for locking the door
+ */
+void LCD_lockDoor(void);
 
 #endif  /* LCD_H_ */

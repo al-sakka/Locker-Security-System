@@ -17,12 +17,19 @@
 
 #define BAUD_RATE           (9600UL)
 #define STR_COMMON_CHAR     ('#')
-//#define MCU_READY			(0x10)
 
-#define NEW_PASS_MODE		(0)
-#define OPEN_DOOR_MODE		(1)
-#define CHANGE_PASS_MODE	(2)
-#define ALARM_SIGNAL		(3)
+/* Main Signals */
+#define NEW_PASS_MODE			(0)
+#define OPEN_DOOR_MODE			(1)
+#define CHANGE_PASS_MODE		(2)
+#define ALARM_SIGNAL			(3)
+#define ALARM_SIGNAL_OFF		(4)
+
+#define MCU_READY				(0x10)
+#define PASSWORD_CORRECT		(0x11)
+#define PASSWORD_WRONG			(0x01)
+#define POLLING_WAITING_PEOPLE	(0x22)
+#define POLLING_LOCKING_DOOR	(0x33)
 
 /*******************************************************************************
 *                                Definitions                                   *

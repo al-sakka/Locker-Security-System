@@ -33,7 +33,6 @@ void DCMotor_Init(void)
 	GPIO_writePin(IN1_PORT, IN1_PIN, LOGIC_LOW);
 	GPIO_writePin(IN2_PORT, IN2_PIN, LOGIC_LOW);
 
-	PWM_Timer0_init();
 	PWM_Timer0_Start(0);
 }
 

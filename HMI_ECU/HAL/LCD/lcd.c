@@ -58,6 +58,9 @@ void LCD_init(void)
 
 	LCD_sendCommand(LCD_CURSOR_OFF);
 	LCD_sendCommand(LCD_CLEAR_SCREEN);
+
+	LCD_startScreen();
+
 }
 
 /*
@@ -198,7 +201,7 @@ void LCD_clearScreen(void)
 
 /*
  * Description :
- * Show first password attempt
+ * Display first password attempt
  */
 void LCD_enterPass(void)
 {
@@ -207,12 +210,22 @@ void LCD_enterPass(void)
 	LCD_moveCursor(1, 0);
 }
 
+/*
+ * Description :
+ * Display Alarm Alert
+ */
 void LCD_alarm(void)
 {
 	LCD_clearScreen();
-	LCD_displayString("Error!");
+	LCD_displayString("System Locked");
+	LCD_moveCursor(1, 0);
+	LCD_displayString("Wait for 1 min");
 }
 
+/*
+ * Description :
+ * Display old password attempt
+ */
 void LCD_enterOldPass(void)
 {
 	LCD_clearScreen();
@@ -223,7 +236,7 @@ void LCD_enterOldPass(void)
 
 /*
  * Description :
- * Show second password attempt
+ * Display second password attempt
  */
 void LCD_confirmPass(void)
 {
@@ -233,7 +246,11 @@ void LCD_confirmPass(void)
 	LCD_displayString("same pass:");
 }
 
-void LCD_menuDisplay()
+/*
+ * Description :
+ * Display string for main menu
+ */
+void LCD_menuDisplay(void)
 {
 	LCD_clearScreen();
 	LCD_displayString("+ : Open Door");
@@ -241,7 +258,11 @@ void LCD_menuDisplay()
 	LCD_displayString("- : Change Pass");
 }
 
-void LCD_doorUnlock()
+/*
+ * Description :
+ * Display string for unlocking door state
+ */
+void LCD_doorUnlock(void)
 {
 	LCD_clearScreen();
 	LCD_displayString("Door Unlocking");
@@ -249,188 +270,35 @@ void LCD_doorUnlock()
 	LCD_displayString("Please Wait");
 }
 
+/*
+ * Description :
+ * Display string for start screen
+ */
+void LCD_startScreen(void)
+{
+	LCD_displayString("Door Lock System");
+	_delay_ms(250);
+	LCD_clearScreen();
+}
 
 /*
  * Description :
- * Set-up LCD configrations
+ * Display string for waiting people
  */
-uint8 LCD_config(uint8 a_pressedKey, uint8 a_mode)
+void LCD_waitPeople(void)
 {
-	static uint8 password_str[PASSWORD_SIZE + 1] = "";		/* 0 : 6 */
-	static uint8 pass_chars = INITIAL_VALUE_ZERO;
-	static uint8 passAttempts = 0;
-	static uint8 first_pass[PASSWORD_SIZE + 1] = "";
-	static uint8 second_pass[PASSWORD_SIZE + 1] = "";
-	static bool enterPressed = FALSE;
+	LCD_clearScreen();
+	LCD_displayString("Waiting For People");
+	LCD_moveCursor(1, 0);
+	LCD_displayString("To Enter");
+}
 
-	if ((a_pressedKey >= '0') && (a_pressedKey <= '9') && (pass_chars < PASSWORD_SIZE))
-	{
-		LCD_displayCharacter('*');
-		password_str[pass_chars] = (uint8)a_pressedKey;
-		++pass_chars;
-		_delay_ms(250);
-	}
-	else if (a_pressedKey == '=' && !enterPressed)
-	{
-		if (a_mode == 1)
-		{
-			password_str[PASSWORD_SIZE] = STR_COMMON_CHAR;
-			UART_sendByte(OPEN_DOOR_MODE);
-
-			while(UART_receiveByte() != 0x10);
-
-			UART_sendString(password_str);
-			pass_chars = INITIAL_VALUE_ZERO;
-			memset(password_str, '\0', PASSWORD_SIZE + 2);
-
-			uint8 receivedByte;
-
-			do
-			{
-			    receivedByte = UART_receiveByte();
-			}
-			while (receivedByte != 0x11 && receivedByte != 0x01);
-
-			if(receivedByte == 0x11)
-			{
-				LCD_doorUnlock();
-				passAttempts = 0;
-				_delay_ms(10000);
-			}
-			else if(receivedByte == 0x01)
-			{
-				LCD_clearScreen();
-				LCD_displayString("Wrong Password");
-				_delay_ms(250);
-
-				LCD_enterOldPass();
-
-				++passAttempts;
-
-				if(passAttempts == 3)
-				{
-					UART_sendByte(ALARM_SIGNAL);
-					LCD_alarm();
-					passAttempts = 0;
-				}
-
-				return a_mode;
-			}
-
-			_delay_ms(250);
-
-		}
-		else if (a_mode == 2)
-		{
-			strncpy(first_pass, password_str, PASSWORD_SIZE);
-			pass_chars = INITIAL_VALUE_ZERO;
-			memset(password_str, '\0', PASSWORD_SIZE);
-			enterPressed = TRUE;
-			LCD_confirmPass();
-		}
-		else if (a_mode == 3)
-		{
-			password_str[PASSWORD_SIZE] = STR_COMMON_CHAR;
-			UART_sendByte(CHANGE_PASS_MODE);
-
-			while(UART_receiveByte() != 0x10);
-
-			UART_sendString(password_str);
-			pass_chars = INITIAL_VALUE_ZERO;
-			memset(password_str, '\0', PASSWORD_SIZE + 2);
-			_delay_ms(250);
-
-			uint8 receivedByte;
-
-			do
-			{
-			    receivedByte = UART_receiveByte();
-			}
-			while (receivedByte != 0x11 && receivedByte != 0x01);
-
-			if(receivedByte == 0x11)
-			{
-				LCD_clearScreen();
-				LCD_displayString("Right Password");
-				_delay_ms(250);
-
-				LCD_enterPass();
-
-				passAttempts = 0;
-
-				return 2;
-			}
-			else if(receivedByte == 0x01)
-			{
-				LCD_clearScreen();
-				LCD_displayString("Wrong Password");
-				_delay_ms(250);
-
-				LCD_enterOldPass();
-
-				++passAttempts;
-
-				if(passAttempts == 3)
-				{
-					UART_sendByte(ALARM_SIGNAL);
-					LCD_alarm();
-					passAttempts = 0;
-				}
-
-				return 3;
-			}
-
-			pass_chars = INITIAL_VALUE_ZERO;
-			memset(password_str, '\0', PASSWORD_SIZE + 2);
-			_delay_ms(250);
-		}
-
-	}
-	else if(a_pressedKey == '=' && enterPressed && a_mode == 2)
-	{
-		strncpy(second_pass, password_str, PASSWORD_SIZE);
-		pass_chars = INITIAL_VALUE_ZERO;
-		enterPressed = FALSE;
-
-		bool passMatched = !(strcmp(first_pass, second_pass));
-
-		memset(first_pass, '\0', PASSWORD_SIZE);
-		memset(second_pass, '\0', PASSWORD_SIZE);
-
-		LCD_clearScreen();
-
-		if(passMatched)
-		{
-			password_str[PASSWORD_SIZE] 	= (uint8)STR_COMMON_CHAR;
-			password_str[PASSWORD_SIZE + 1] = '\0';
-			UART_sendByte(NEW_PASS_MODE);
-
-			while(UART_receiveByte() != 0x10);
-
-			UART_sendString(password_str);
-
-			memset(password_str, '\0', PASSWORD_SIZE + 2);
-			_delay_ms(250);
-
-			passAttempts = 0;
-
-			return 1;
-		}
-		else
-		{
-			++passAttempts;
-
-			if(passAttempts == 3)
-			{
-				UART_sendByte(ALARM_SIGNAL);
-				passAttempts = 0;
-			}
-
-			memset(password_str, '\0', PASSWORD_SIZE + 2);
-			LCD_enterPass();
-		}
-
-	}
-
-	return a_mode;
+/*
+ * Description :
+ * Display string for locking the door
+ */
+void LCD_lockDoor(void)
+{
+	LCD_clearScreen();
+	LCD_displayString("Locking Door");
 }

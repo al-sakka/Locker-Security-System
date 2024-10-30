@@ -25,14 +25,6 @@
 *******************************************************************************/
 
 /*
- *  Initializes Timer0 in PWM mode
- * Prescaler: F_CPU/1024
- * Non-inverting mode
- * The function configures OC0 as the output pin
- */
-void PWM_Timer0_init(void);
-
-/*
  *  Sets the required duty cycle for OCR0
  */
 void PWM_Timer0_Start(uint8 duty_cycle);

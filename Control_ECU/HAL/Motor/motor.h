@@ -28,6 +28,8 @@
 #define EN1_PORT PORTB_ID
 #define EN1_PIN  PIN3_ID
 
+#define MAX_SPEED	(100)
+#define MIN_SPEED	(0)
 
 typedef enum
 {

@@ -40,6 +40,13 @@ typedef unsigned char bool;
 #define LOGIC_LOW (0u)
 #endif
 
+#ifndef ONE
+#define ONE (1u)
+#endif
+#ifndef ZERO
+#define ZERO (0u)
+#endif
+
 #define NULL_PTR            ((void *) 0x00)
 #define INITIAL_VALUE_ZERO  (0)
 #define NULL_CHAR           ('\0')
