@@ -41,7 +41,7 @@ static void Timer1_CompareMatch_Callback(void)
 {
 	++(g_compareMatchCount);
 
-	if(g_compareMatchCount >= _15_MINUTES_TICKS)
+	if(g_compareMatchCount >= _15_SECONDS_TICKS)
 	{
 		/* After 15 seconds */
 		Timer_deInit(TIMER1);

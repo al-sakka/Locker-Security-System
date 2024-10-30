@@ -19,7 +19,7 @@
 *                                Definitions                                  *
 *******************************************************************************/
 
-#define _15_MINUTES_TICKS	(2u)
+#define _15_SECONDS_TICKS	(2u)
 
 typedef enum
 {
